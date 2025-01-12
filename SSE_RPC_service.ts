@@ -1,5 +1,4 @@
-
-import { DEV } from "./server.ts"
+import { RPC_Channel_Name } from "./server.ts"
 //import {loadSample} from './utils.ts'
 
 /** 
@@ -10,31 +9,25 @@ const StreamHeaders = {
    "Access-Control-Allow-Origin": "*",
    "Cache-Control": "no-cache"
 }
+
 /** 
  * Subscribes a client to a Server Sent Event stream    
- * This stream supports remote DB transaction procedures (SSE-RPC)     
- * @param (Request) req - the original http request object    
+ * This stream implements Calls to a single Remote KvDB Procedure 'GETALL' (SSE-RPC)   
+ * The persistent stream returns values to the connected clients EventSource   
+ * 
+ * NOTE: This is a stripped-down version of a full `Kv-CRUD`, `File-IO`, and `Relay` RPC-Service.       
  */
-export function registerClient(req: Request): Response {
-
-   if (DEV) console.info('Started SSE Stream! - ', req.url)
-
-   /** 
-    * each client gets its own BroadcastChannel instance
-    */
-   const thisChannel = new BroadcastChannel("sse-rpc");
-
-
+export function buildClientStream(): Response {
+   /** each client gets its own BroadcastChannel instance */
+   const rpcChannel = new BroadcastChannel(RPC_Channel_Name);
+   /** create a persistent stream for each client connection */ 
    const stream = new ReadableStream({
       start: (controller) => {
-
-         // listening for RPC or mutation-event messages
-         thisChannel.onmessage = async (e) => {
-            const { txID, procedure, params } = e.data
-            if (DEV) console.log(`sse got - txID: ${txID}, procedure: ${procedure}, params: ${JSON.stringify(params)}`)
-
+         // listen for any RPC event messages
+         rpcChannel.onmessage = async (e) => {
+            const { txID, procedure } = e.data
             let thisError: string | null = null
-            let thisResult = null
+            let thisResult: string | null = null
 
             // calling Snapshot procedures
             switch (procedure) {
@@ -54,7 +47,7 @@ export function registerClient(req: Request): Response {
                }
             }
 
-            /** Build & stream SSE reply */
+            /** Build & stream the RPC reply */
             const reply = JSON.stringify({
                txID: txID,
                error: thisError,
@@ -65,7 +58,7 @@ export function registerClient(req: Request): Response {
       },
 
       cancel() {
-         thisChannel.close();
+         rpcChannel.close();
       }
    })
 
