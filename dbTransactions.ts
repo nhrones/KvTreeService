@@ -1,7 +1,7 @@
 
 import { getTreeObj } from './TreeNodes.ts'
 import { DEV } from "./context.ts"
-import { loadSample } from "./utils.ts"
+//import { loadSample } from "./utils.ts"
 import {
    deleteRow,
    getRow,
@@ -90,7 +90,7 @@ export function registerClient(req: Request): Response {
 
                /** Return all records */
                case 'GETALL': {
-                  await loadSample()
+                  //await loadSample() // used to enter initial sample data
                   const result = await getAll()
                   const to = getTreeObj(result)
                   thisResult = JSON.stringify(to)
