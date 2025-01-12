@@ -70,29 +70,29 @@ export type TypedProcedures = {
 /** 
  * An object-store descriptor using a sample object as a prototype 
  */
-export type Schema = {
-   /** The name used to persist data to IndexedDB */
-   name: string,
-   /** A sample object used to build the schema for our object store and UI.     
-    *  Any numeric property set to -1, or string property set to 'READONLY',     
-    *  will be readonly in the UI. 
-    */
-   sample: ObjectLiteral
-}
+// export type Schema = {
+//    /** The name used to persist data to IndexedDB */
+//    name: string,
+//    /** A sample object used to build the schema for our object store and UI.     
+//     *  Any numeric property set to -1, or string property set to 'READONLY',     
+//     *  will be readonly in the UI. 
+//     */
+//    sample: ObjectLiteral
+// }
 
-export type dbOptions = {
-   Schema: Schema,
-   Rows: number,
-   RowsPerPage: number,
-   Size: number
-}
+// export type dbOptions = {
+//    Schema: Schema,
+//    Rows: number,
+//    RowsPerPage: number,
+//    Size: number
+// }
 
-export type Column = {
-   name: string,
-   type: string,
-   readOnly: boolean,
-   order: string,
-}
+// export type Column = {
+//    name: string,
+//    type: string,
+//    readOnly: boolean,
+//    order: string,
+// }
 
 export type ObjectLiteral = {
    [key: string]: any;

@@ -1,9 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 
-/** A cache of a KvDb-collection.    
+/** A KvDb shadow-cache.    
  *  This is a consistant cache,   
- *  It's kept in sync with a specific collection 
- *  in a Deno.Kv database.   
+ *  It's kept in sync with a specific db.  
  *  We load it once on cold start.
  */
 export let shadowCache: Map<any, any>
@@ -34,7 +33,7 @@ export async function deleteRow(key: any[]) {
 /**
  * get a record
  */
-export async function getRow(key: any[], _version: string) {
+export async function getRow(key: any[], _version?: string) {
    const db = await Deno.openKv();
    const result = await db.get(key)
    db.close()
@@ -61,7 +60,7 @@ export async function setRow(key: any[], value: any) {
 }
 
 /**
- *  bulk fetch - get record collection 
+ *  bulk fetch - get all records
  */
 export async function getAll() {
    const fetchStart = performance.now()

@@ -1,6 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
 import * as Kv from "./kvdb.ts";
 
+/**
+ * This module converts raw-Kv into a collection that
+ * simplifies building tree-nodes on the clint.
+ * 
+ * This could be run on the client, but I like it here.
+ */
+
 // deno-lint-ignore no-unused-vars
 let tree = null
 

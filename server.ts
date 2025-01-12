@@ -1,11 +1,8 @@
 //-----------------------------------------------------------
-// get external dependencies
-//-----------------------------------------------------------
-import { registerClient } from "./deps.ts"
-//-----------------------------------------------------------
-// get internal dependencies
+// import internal dependencies
 //-----------------------------------------------------------
 import { DEV, corsResponse } from './context.ts'
+import { registerClient } from "./dbTransactions.ts"
 
 
 
@@ -27,7 +24,7 @@ Deno.serve({ port: 9099 },
       else if (request.method === 'POST') {
          if (DEV) console.log('handling POST request!')
 
-         // extract the request packet
+         // extract the request payload
          const data = await request.json();
 
          // inform all interested parties about this RPC request
@@ -39,7 +36,7 @@ Deno.serve({ port: 9099 },
          return corsResponse()
 
       } else {
-         const errMsg = `Error: Request was not a valid SSE request! (405)`
+         const errMsg = `Error: Request was not a valid RPC request! (405)`
          console.error(errMsg)
          return Promise.resolve(new Response(errMsg, { status: 405 }))
       }
