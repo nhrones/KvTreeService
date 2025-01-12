@@ -1,6 +1,6 @@
 
 import { DEV } from "./server.ts"
-import {loadSample} from './utils.ts'
+//import {loadSample} from './utils.ts'
 
 /** 
  * SSE stream headers 
@@ -40,7 +40,7 @@ export function registerClient(req: Request): Response {
             switch (procedure) {
                /** Return all records */
                case 'GETALL': {
-                  await loadSample() // used to enter initial sample data
+                  //await loadSample() // used to enter initial sample data
                   const result = await getAll()
                   thisResult = JSON.stringify(result) 
                   break;
