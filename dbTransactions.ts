@@ -1,12 +1,6 @@
 
-import { getTreeObj } from './TreeNodes.ts'
 import { DEV } from "./server.ts"
-import {
-   deleteRow,
-   getRow,
-   getAll,
-   setRow,
-} from './kvdb.ts'
+//import { getAll } from './kvdb.ts'
 
 //import {loadSample} from './utils.ts'
 
@@ -43,61 +37,16 @@ export function registerClient(req: Request): Response {
 
             let thisError: string | null = null
             let thisResult = null
-            const { collection, id, vs } = params
-            const key = [collection, id]
 
             // calling Snapshot procedures
             switch (procedure) {
-
-               /** A mutation event - fired by kvdb.ts */
-               case "MUTATION": {
-                  if (DEV) console.log(`MUTATION event - id: ${txID}, row: ${params.rowID}, type: ${params.type}`)
-                  thisError = null
-                  thisResult = params
-                  break;
-               }
-
-               /** delete a row */
-               case "DELETE": {
-                  await deleteRow(key)
-                     thisError = null
-                     thisResult = "ok"
-                  break;
-               }
-
-               /** Fetch a row */
-               case "GET": {
-                  const result = await getRow(key, vs)
-                  thisError = null
-                  thisResult = result
-                  break;
-               }
-
-               /**
-                * Set the value for the given key in the database. 
-                * If a value already exists for the key, it will be overwritten.
-                */
-               case "SET": {
-                  const result = await setRow(key, params.value);
-                  if (result.versionstamp === null) {
-                     thisError = 'Oooppps!'
-                     thisResult = null
-                  } else {
-                     thisError = null
-                     thisResult = result.versionstamp
-                  }
-                  break;
-               }
-
                /** Return all records */
                case 'GETALL': {
                   //await loadSample() // used to enter initial sample data
                   const result = await getAll()
-                  //const to = getTreeObj(result)
-                  thisResult = JSON.stringify(result)  //(to)
+                  thisResult = JSON.stringify(result) 
                   break;
                }
-
                /** default fall through */
                default: {
                   console.log('handling - default')
@@ -127,4 +76,18 @@ export function registerClient(req: Request): Response {
          new TextEncoderStream()),
       { headers: StreamHeaders }
    )
+}
+
+/**
+ *  bulk fetch - get all records
+ */
+async function getAll() {
+   const shadowCache = new Map()
+   const db = await Deno.openKv();
+   const entries = db.list({ prefix: [] })
+   for await (const entry of entries) {
+      shadowCache.set(entry.key, entry.value)
+   }
+   db.close()
+   return Array.from(shadowCache.entries())
 }
