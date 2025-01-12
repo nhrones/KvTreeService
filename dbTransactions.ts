@@ -1,12 +1,14 @@
 
 import { getTreeObj } from './TreeNodes.ts'
-import { DEV } from "./context.ts"
+import { DEV } from "./server.ts"
 import {
    deleteRow,
    getRow,
    getAll,
    setRow,
 } from './kvdb.ts'
+
+//import {loadSample} from './utils.ts'
 
 /** 
  * SSE stream headers 
@@ -91,8 +93,8 @@ export function registerClient(req: Request): Response {
                case 'GETALL': {
                   //await loadSample() // used to enter initial sample data
                   const result = await getAll()
-                  const to = getTreeObj(result)
-                  thisResult = JSON.stringify(to)
+                  //const to = getTreeObj(result)
+                  thisResult = JSON.stringify(result)  //(to)
                   break;
                }
 

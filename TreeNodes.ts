@@ -1,16 +1,14 @@
 // deno-lint-ignore-file no-explicit-any
-import * as Kv from "./kvdb.ts";
-
 /**
  * This module converts raw-Kv into a collection that
- * simplifies building tree-nodes on the clint.
- * 
- * This could be run on the client, but I like it here.
+ * simplifies building tree-nodes.
  */
 
-// deno-lint-ignore no-unused-vars
-let tree = null
-
+/**
+ * 
+ * @param nodes 
+ * @returns custom string array 
+ */
 export function getTreeObj(nodes: any[]) {
    const to = { kv: {} }
    for (let index = 0; index < nodes.length; index++) {
@@ -19,12 +17,9 @@ export function getTreeObj(nodes: any[]) {
    return to;
 }
 
-await Kv.loadCache().then( () => {
-   const raw = [...Kv.shadowCache.entries()]
-   tree = getTreeObj(raw)
-})
-
-// 
+/**
+ * process a node
+ */
 function processNode(to: any, node: any) {
 
    const k = node[0]

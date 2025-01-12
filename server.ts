@@ -1,9 +1,6 @@
-//-----------------------------------------------------------
-// import internal dependencies
-//-----------------------------------------------------------
-import { DEV, corsResponse } from './context.ts'
-import { registerClient } from "./dbTransactions.ts"
 
+import { registerClient } from "./dbTransactions.ts"
+export const DEV = true
 
 
 /**
@@ -32,8 +29,16 @@ Deno.serve({ port: 9099 },
          bc.postMessage(data);
          bc.close();
 
-         // acknowledge the request
-         return corsResponse()
+         // acknowledge this POST request
+         return new Response("",
+            {
+               status: 200,
+               headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Cache-Control": "no-cache",
+                  "Access-Control-Allow-Methods": "GET OPTIONS POST DELETE",
+               },
+            })
 
       } else {
          const errMsg = `Error: Request was not a valid RPC request! (405)`

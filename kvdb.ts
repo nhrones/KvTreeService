@@ -63,16 +63,16 @@ export async function setRow(key: any[], value: any) {
  *  bulk fetch - get all records
  */
 export async function getAll() {
-   const fetchStart = performance.now()
+   //const fetchStart = performance.now()
    shadowCache = new Map()
    const db = await Deno.openKv();
    const entries = db.list({ prefix: [] })
    for await (const entry of entries) {
-      console.info(`key:${entry.key}. val:`, entry.value)
+      //console.info(`key:${entry.key}. val:`, entry.value)
       shadowCache.set(entry.key, entry.value)
    }
-   const fetchTime = (performance.now() - fetchStart).toFixed(2)
-   console.log(`Loading ${shadowCache.size} records in cache took -  ${fetchTime}ms`)
+   //const fetchTime = (performance.now() - fetchStart).toFixed(2)
+   //console.log(`Loading ${shadowCache.size} records in cache took -  ${fetchTime}ms`)
    db.close()
    return Array.from(shadowCache.entries())
 }
