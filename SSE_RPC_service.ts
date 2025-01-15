@@ -3,7 +3,7 @@ import { DEV } from "./server.ts"
 import { loadSampleData } from './utils.ts'
 
 /** use to initialize DB */
-export const INIT = !!Deno.env.get("DEV")
+export const INIT = !!Deno.env.get("INIT")
 
 /** 
  * SSE stream headers 
