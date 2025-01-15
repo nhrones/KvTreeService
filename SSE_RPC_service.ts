@@ -70,7 +70,7 @@ export function buildClientStream(): Response {
       },
 
       cancel() {
-         if (DEV) console.log("Client has disconnected from SSE stream!")
+         if (DEV) console.log("Client disconnected from SSE-RPC")
          rpcChannel.close();
       }
    })
