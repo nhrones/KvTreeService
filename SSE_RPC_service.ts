@@ -1,6 +1,9 @@
 import { RPC_Channel_Name } from "./server.ts"
 import { DEV } from "./server.ts"
-//import {loadSample} from './utils.ts'
+import { loadSampleData } from './utils.ts'
+
+/** use to initialize DB */
+export const INIT = !!Deno.env.get("DEV")
 
 /** 
  * SSE stream headers 
@@ -39,7 +42,10 @@ export function buildClientStream(): Response {
             switch (procedure) {
                /** Return all records */
                case 'GETALL': {
-                  //await loadSample() // used to enter initial sample data
+                  if (INIT) {
+                     console.log("Refreshing sample dataset!")
+                     await loadSampleData()
+                  }
                   const result = await getAll()
                   thisResult = JSON.stringify(result) 
                   break;

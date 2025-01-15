@@ -1,6 +1,6 @@
 
 /** load test data set */
-export async function loadSample() {
+export async function loadSampleData() {
    await clear()
    const db = await Deno.openKv()
    await db.set(["env", "cwd"], "./")
