@@ -16,7 +16,7 @@ export async function loadSampleData() {
    await db.set(["users", "admins", "super-user", 2], { id: 2, first: "John", last: "Smith", age: 25})
    await db.set(["users", "admins", "super-user", 3], { id: 3, first: "Tricky", last: "Nick", age: 52})
    await db.set(["users", "admins", "admin", 1], { id: 1, first: "Admin", last: "Admin", age: 60})
-   await db.set(["a", "very", "deep", 'K', "V", "key"], "A very deep K V key")
+   await db.set(["Z", "very", "deep", 'K', "V", "key"], "Z very deep K V key")
 
     db.close()
 }
