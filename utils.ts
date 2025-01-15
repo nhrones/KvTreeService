@@ -37,6 +37,7 @@ export async function getAllKeys() {
    const db = await Deno.openKv();
    const entries = db.list({ prefix: [] })
    for await (const entry of entries) {
+      console.log(entry.key)
       allKeys.push(entry.key)
    }
    db.close()

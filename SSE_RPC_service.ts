@@ -1,5 +1,5 @@
 import { RPC_Channel_Name } from "./server.ts"
-//import {loadSample} from './utils.ts'
+import {loadSample} from './utils.ts'
 
 /** 
  * SSE stream headers 
@@ -29,6 +29,8 @@ export function buildClientStream(): Response {
             let thisError: string | null = null
             let thisResult: string | null = null
 
+            //TODO re-implement GET, SET, DELETE
+
             // calling Snapshot procedures
             switch (procedure) {
                /** Return all records */
@@ -36,6 +38,7 @@ export function buildClientStream(): Response {
                   //await loadSample() // used to enter initial sample data
                   const result = await getAll()
                   thisResult = JSON.stringify(result) 
+                  //console.log('thisResult:',thisResult)
                   break;
                }
                /** default fall through */
