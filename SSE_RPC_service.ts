@@ -70,6 +70,7 @@ export function buildClientStream(): Response {
       },
 
       cancel() {
+         if (DEV) console.log("SSE Stream cancel")
          rpcChannel.close();
       }
    })
