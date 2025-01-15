@@ -1,22 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
+
 export type Callback = (error: any, result: any) => void
-
-/**
- *  User Type
- */
-export type UserType = {
-   id: number,
-   first: string,
-   last: string,
-   age: number,
-   version: string
-}
-
-export type RpcReturnType = {
-   querySet: ObjectLiteral[]
-   totalPages: number,
-   currentPage: number
-}
 
 /** 
  * Named Procedure types    
@@ -26,44 +10,23 @@ export type RpcReturnType = {
  */
 export type TypedProcedures = {
 
-   /** DELETE event */
+   /** DELETE  */
    DELETE: {
-      collection: string
-      id: number
+      key: JsonArray
    },
 
-   /** ORDER */
-   ORDER: {
-      column: string,
-      direction: string
+   /** GET */
+   GET:{
+      key: JsonArray
    },
 
-   /** FILTER */
-   FILTER: {
-      columnName: string,
-      value: string
-   },
+   /** GETALL */
+   GETALL: Record<string | number | symbol, never>,
 
-   /** GETMANY */
-   GETMANY: {
-      collection: string,
-      size: number
-   },
-
-   /** PAGINATE event */
-   PAGINATE: {
-      collection: string
-      rowsPerPage: number
-      currentPage: number
-   },
-
-   /** SET event */
+   /** SET */
    SET: {
-      collection: string
-      id: number
-      value: UserType
-      currentPage: number
-      rowsPerPage: number
+      key: JsonArray
+      value: JsonValue
    }
 }
 
@@ -72,21 +35,9 @@ export type ObjectLiteral = {
 }
 
 export type DbRpcPackage = {
-   procedure: 'GET' | 'PUT',
+   procedure: 'DELETE' | 'GET' | 'GETALL' | 'SET',
    key: string,
    value?: string
-}
-
-//=========================================================
-//                         RPC
-// ========================================================
-
-/** queryParameters */
-export type QueryParams = {
-   filterColumn: string, 
-   filterValue: string,
-   orderColumn: string, 
-   direction: string
 }
 
 export type TranactionID = number
