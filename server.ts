@@ -1,5 +1,6 @@
 import { buildClientStream } from "./SSE_RPC_service.ts"
 export const RPC_Channel_Name = "RPC"
+export const DEV = !!Deno.env.get("DEV")
 
 /**
  *  Serve and handle all http requests

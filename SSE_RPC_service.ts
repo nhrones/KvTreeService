@@ -1,4 +1,5 @@
 import { RPC_Channel_Name } from "./server.ts"
+import { DEV } from "./server.ts"
 //import {loadSample} from './utils.ts'
 
 /** 
@@ -20,7 +21,8 @@ const StreamHeaders = {
 export function buildClientStream(): Response {
    /** each client gets its own BroadcastChannel instance */
    const rpcChannel = new BroadcastChannel(RPC_Channel_Name);
-   /** create a persistent stream for each client connection */ 
+   /** create a persistent stream for each client connection */
+   if (DEV) console.log(`Client subscribed to SSE-RPC`)
    const stream = new ReadableStream({
       start: (controller) => {
          // listen for any RPC event messages
@@ -28,6 +30,8 @@ export function buildClientStream(): Response {
             const { txID, procedure } = e.data
             let thisError: string | null = null
             let thisResult: string | null = null
+
+            if (DEV) console.log(`Recieved a ${procedure} RPC call: `)
 
             //TODO re-implement GET, SET, DELETE
 
@@ -38,12 +42,11 @@ export function buildClientStream(): Response {
                   //await loadSample() // used to enter initial sample data
                   const result = await getAll()
                   thisResult = JSON.stringify(result) 
-                  //console.log('thisResult:',thisResult)
                   break;
                }
                /** default fall through */
                default: {
-                  console.log('handling - default')
+                  if (DEV) console.log('handling - default')
                   thisError = 'Unknown procedure called!';
                   thisResult = null
                   break;
